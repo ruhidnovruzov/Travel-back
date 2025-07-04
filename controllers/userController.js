@@ -129,3 +129,39 @@ exports.updateUserRole = asyncHandler(async (req, res) => {
         throw new Error('İstifadəçi tapılmadı.');
     }
 });
+
+exports.createUser = asyncHandler(async (req, res) => {
+    const { name, email, password, role } = req.body;
+
+    // Emailin unikal olub-olmadığını yoxla
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+        res.status(400);
+        throw new Error('Bu email ilə istifadəçi artıq mövcuddur.');
+    }
+
+    // Yeni istifadəçi yarat
+    const user = await User.create({
+        name,
+        email,
+        password,
+        role: role || 'user'
+    });
+
+    if (user) {
+        res.status(201).json({
+            success: true,
+            data: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+            },
+            message: 'İstifadəçi uğurla yaradıldı.'
+        });
+    } else {
+        res.status(400);
+        throw new Error('İstifadəçi yaradılmadı.');
+    }
+});
+

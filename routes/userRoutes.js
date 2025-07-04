@@ -10,6 +10,7 @@ const {
     updateUserRole
 } = require('../controllers/userController');
 const { protect, authorize } = require('../middleware/authMiddleware');
+const createUser = require('../controllers/userController').createUser; // Yeni istifadəçi yaratma funksiyasını əlavə edin
 
 const router = express.Router();
 
@@ -28,5 +29,9 @@ router.route('/:id')
 
 router.route('/:id/role')
     .put(protect, authorize('admin'), updateUserRole); // İstifadəçi rolunu yenilə
+
+    router.route('/')
+    .post(protect, authorize('admin'), createUser) // <-- bunu əlavə edin
+    .get(protect, authorize('admin'), getUsers);
 
 module.exports = router;
