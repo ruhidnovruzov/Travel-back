@@ -27,7 +27,7 @@ connectDB();
 
 const app = express();
    app.use(cors({
-     origin: 'https://az-travel.vercel.app/', // React frontend-inizin ünvanı
+     origin: 'https://az-travel.vercel.app', // React frontend-inizin ünvanı
      credentials: true
    }));
 // Middleware-ləri tətbiq et
